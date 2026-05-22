@@ -240,7 +240,7 @@ function OrderModal({ product, onClose }: { product: Product; onClose: () => voi
 
           <div>
             <label className="block text-sm font-semibold text-cement-900 mb-2">
-              Quantity (bags/tons) *
+              Quantity (bags) *
             </label>
             <input
               type="text"
@@ -248,7 +248,7 @@ function OrderModal({ product, onClose }: { product: Product; onClose: () => voi
               value={formData.quantity}
               onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent outline-none"
-              placeholder="e.g., 50 bags, 10 tons"
+              placeholder="e.g., 50 bags"
             />
           </div>
 

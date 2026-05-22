@@ -259,7 +259,7 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                       <input
                         type="text"
-                        placeholder="Quantity (bags/tons) *"
+                        placeholder="Quantity (bags) *"
                         value={customerDetails.quantity}
                         onChange={(e) => setCustomerDetails({ ...customerDetails, quantity: e.target.value })}
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
