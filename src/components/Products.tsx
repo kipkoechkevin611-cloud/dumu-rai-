@@ -153,10 +153,10 @@ function OrderModal({ product, onClose }: { product: Product; onClose: () => voi
 • Location: ${formData.location}
 • Quantity: ${formData.quantity}
 
-📞 *Contact:* +254 740 272 542
+📞 *Contact:* +254 736 813 191
     `.trim();
 
-    const whatsappUrl = `https://wa.me/254740272542?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/254736813191?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
     onClose();
   };

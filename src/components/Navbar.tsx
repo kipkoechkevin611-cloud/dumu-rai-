@@ -78,7 +78,7 @@ export default function Navbar() {
               <span className="font-medium">Cart</span>
             </a>
             <a
-              href="tel:+254740272542"
+              href="tel:+254736813191"
               className="flex items-center space-x-2 bg-gold-500 text-white px-6 py-2 rounded-lg hover:bg-gold-600 transition-colors"
             >
               <Phone size={18} />
@@ -125,7 +125,7 @@ export default function Navbar() {
                 <span>Cart</span>
               </a>
               <a
-                href="tel:+254740272542"
+                href="tel:+254736813191"
                 className="flex items-center space-x-2 bg-gold-500 text-white px-6 py-3 rounded-lg hover:bg-gold-600 transition-colors justify-center"
               >
                 <Phone size={18} />
