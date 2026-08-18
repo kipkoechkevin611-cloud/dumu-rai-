@@ -8,8 +8,8 @@ export default function Contact() {
     {
       icon: Phone,
       title: "Phone",
-      value: "+254 753 567 847",
-      link: "tel:+254753567847",
+      value: "+254 788 203 584",
+      link: "tel:+254788203584",
     },
     {
       icon: Mail,
@@ -84,7 +84,7 @@ export default function Contact() {
             {/* Quick Contact Buttons */}
             <div className="mt-8 space-y-4">
               <a
-                href="https://wa.me/254753567847"
+                href="https://wa.me/254788203584"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center space-x-2 w-full bg-green-500 text-white py-4 rounded-lg font-semibold hover:bg-green-600 transition-colors"
@@ -92,7 +92,7 @@ export default function Contact() {
                 <span>Chat on WhatsApp</span>
               </a>
               <a
-                href="tel:+254753567847"
+                href="tel:+254788203584"
                 className="flex items-center justify-center space-x-2 w-full bg-gold-500 text-white py-4 rounded-lg font-semibold hover:bg-gold-600 transition-colors"
               >
                 <Phone size={20} />

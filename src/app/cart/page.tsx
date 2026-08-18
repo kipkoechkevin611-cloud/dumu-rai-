@@ -83,10 +83,10 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
 💰 *Total: KES ${getTotal().toLocaleString()}
 
 📍 *Location: Awasi, Kericho-Kisumu Highway, Nyanza Region*
-📞 *Contact:* +254 753 567 847
+📞 *Contact:* +254 788 203 584
     `.trim();
 
-    const whatsappUrl = `https://wa.me/254753567847?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/254788203584?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
   };
 
