@@ -61,7 +61,7 @@ export default function CartPage() {
     }, 0);
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (!customerDetails.fullName || !customerDetails.phone || !customerDetails.location || !customerDetails.quantity) {
       alert("Please fill in your name, phone, location, and quantity to complete your order.");
       return;
@@ -83,11 +83,27 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
 💰 *Total: KES ${getTotal().toLocaleString()}
 
 📍 *Location: Awasi, Kericho-Kisumu Highway, Nyanza Region*
-📞 *Contact:* +254 788 203 584
+📞 *Contact:* +254 746 392 602
     `.trim();
 
-    const whatsappUrl = `https://wa.me/254788203584?text=${encodeURIComponent(message)}`;
+    const whatsappUrl = `https://wa.me/254746392602?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank");
+
+    // Send email via API
+    try {
+      await fetch('/api/send-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          subject: 'Shopping Cart Order - Rai Cement',
+          message,
+        }),
+      });
+    } catch (error) {
+      console.error('Failed to send email:', error);
+    }
   };
 
   return (

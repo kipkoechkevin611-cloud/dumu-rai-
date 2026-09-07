@@ -8,14 +8,14 @@ export default function Contact() {
     {
       icon: Phone,
       title: "Phone",
-      value: "+254 788 203 584",
-      link: "tel:+254788203584",
+      value: "+254 746 392 602",
+      link: "tel:+254746392602",
     },
     {
       icon: Mail,
       title: "Email",
-      value: "info@raicement.co.ke",
-      link: "mailto:info@raicement.co.ke",
+      value: "raicement33@gmail.com",
+      link: "mailto:raicement33@gmail.com",
     },
     {
       icon: MapPin,
@@ -84,7 +84,7 @@ export default function Contact() {
             {/* Quick Contact Buttons */}
             <div className="mt-8 space-y-4">
               <a
-                href="https://wa.me/254788203584"
+                href="https://wa.me/254746392602"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center space-x-2 w-full bg-green-500 text-white py-4 rounded-lg font-semibold hover:bg-green-600 transition-colors"
@@ -92,7 +92,7 @@ export default function Contact() {
                 <span>Chat on WhatsApp</span>
               </a>
               <a
-                href="tel:+254788203584"
+                href="tel:+254746392602"
                 className="flex items-center justify-center space-x-2 w-full bg-gold-500 text-white py-4 rounded-lg font-semibold hover:bg-gold-600 transition-colors"
               >
                 <Phone size={20} />

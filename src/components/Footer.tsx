@@ -92,14 +92,14 @@ export default function Footer() {
                 <Phone className="text-gold-400 mt-1" size={20} />
                 <div>
                   <p className="text-gray-400">Phone</p>
-                  <a href="tel:+254788203584" className="text-white hover:text-gold-400 transition-colors">+254 788 203 584</a>
+                  <a href="tel:+254746392602" className="text-white hover:text-gold-400 transition-colors">+254 746 392 602</a>
                 </div>
               </li>
               <li className="flex items-start space-x-3">
                 <Mail className="text-gold-400 mt-1" size={20} />
                 <div>
                   <p className="text-gray-400">Email</p>
-                  <a href="mailto:info@raicement.co.ke" className="text-white hover:text-gold-400 transition-colors">info@raicement.co.ke</a>
+                  <a href="mailto:raicement33@gmail.com" className="text-white hover:text-gold-400 transition-colors">raicement33@gmail.com</a>
                 </div>
               </li>
               <li className="flex items-start space-x-3">

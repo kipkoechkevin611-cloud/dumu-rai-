@@ -41,7 +41,6 @@ const products: Product[] = [
 ];
 
 export default function Products() {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   return (
     <section id="products" className="py-24 bg-cement-50">
@@ -88,7 +87,8 @@ export default function Products() {
                   <h3 className="text-2xl font-bold text-cement-900">{product.name}</h3>
                 </div>
 
-                <p className="text-cement-600 mb-4">{product.description}</p>
+                <p className="text-cement-600 mb-2">{product.description}</p>
+                <p className="text-2xl font-bold text-gold-600 mb-4">{product.price}</p>
 
                 <div className="space-y-2 mb-6">
                   {product.features.map((feature, idx) => (
@@ -99,169 +99,20 @@ export default function Products() {
                   ))}
                 </div>
 
-                <div className="space-y-3">
-                  <button
-                    onClick={() => setSelectedProduct(product)}
-                    className="w-full bg-gradient-to-r from-gold-500 to-gold-600 text-white py-3 rounded-lg font-semibold hover:from-gold-600 hover:to-gold-700 transition-all duration-300 shadow-lg hover:shadow-gold-500/25"
-                  >
-                    ORDER NOW
-                  </button>
-                  <a
-                    href="/cart"
-                    className="w-full flex items-center justify-center space-x-2 bg-cement-900 text-white py-3 rounded-lg font-semibold hover:bg-cement-800 transition-all duration-300"
-                  >
-                    <ShoppingCart size={20} />
-                    <span>Add to Cart</span>
-                  </a>
-                </div>
+                <a
+                  href="/cart"
+                  className="w-full flex items-center justify-center space-x-2 bg-cement-900 text-white py-3 rounded-lg font-semibold hover:bg-cement-800 transition-all duration-300"
+                >
+                  <ShoppingCart size={20} />
+                  <span>Add to Cart</span>
+                </a>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
 
-      {/* Order Modal */}
-      {selectedProduct && (
-        <OrderModal product={selectedProduct} onClose={() => setSelectedProduct(null)} />
-      )}
     </section>
   );
 }
 
-function OrderModal({ product, onClose }: { product: Product; onClose: () => void }) {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    phone: "",
-    email: "",
-    location: "",
-    quantity: "",
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const message = `
-*NEW CEMENT ORDER - RAI CEMENT LIMITED*
-
-📦 *Product:* ${product.name}
-💰 *Price:* ${product.price}
-
-👤 *Customer Details:*
-• Name: ${formData.fullName}
-• Phone: ${formData.phone}
-• Email: ${formData.email}
-• Location: ${formData.location}
-• Quantity: ${formData.quantity}
-
-📞 *Contact:* +254 788 203 584
-    `.trim();
-
-    const whatsappUrl = `https://wa.me/254788203584?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, "_blank");
-    onClose();
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm">
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        className="bg-white rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto"
-      >
-        <div className="p-6 border-b border-gray-200">
-          <div className="flex items-center justify-between">
-            <h3 className="text-2xl font-bold text-cement-900">Order {product.name}</h3>
-            <button
-              onClick={onClose}
-              className="text-gray-400 hover:text-cement-900 transition-colors"
-            >
-              ✕
-            </button>
-          </div>
-        </div>
-
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          <div>
-            <label className="block text-sm font-semibold text-cement-900 mb-2">
-              Full Name *
-            </label>
-            <input
-              type="text"
-              required
-              value={formData.fullName}
-              onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent outline-none"
-              placeholder="Enter your full name"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-cement-900 mb-2">
-              Phone Number *
-            </label>
-            <input
-              type="tel"
-              required
-              value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent outline-none"
-              placeholder="e.g., +254 7XX XXX XXX"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-cement-900 mb-2">
-              Email *
-            </label>
-            <input
-              type="email"
-              required
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent outline-none"
-              placeholder="your@email.com"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-cement-900 mb-2">
-              Exact Location *
-            </label>
-            <input
-              type="text"
-              required
-              value={formData.location}
-              onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent outline-none"
-              placeholder="Enter your delivery location"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-cement-900 mb-2">
-              Quantity (bags) *
-            </label>
-            <input
-              type="text"
-              required
-              value={formData.quantity}
-              onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent outline-none"
-              placeholder="e.g., 50 bags"
-            />
-          </div>
-
-          <div className="pt-4">
-            <button
-              type="submit"
-              className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-4 rounded-lg font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-lg"
-            >
-              Order Now
-            </button>
-          </div>
-        </form>
-      </motion.div>
-    </div>
-  );
-}
