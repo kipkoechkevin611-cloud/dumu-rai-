@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     const { subject, message } = body;
 
     const data = await resend.emails.send({
-      from: 'Rai Cement Orders <orders@raicement.co.ke>',
+      from: 'Rai Cement Orders <onboarding@resend.dev>',
       to: 'raicement33@gmail.com',
       subject: subject,
       text: message,
