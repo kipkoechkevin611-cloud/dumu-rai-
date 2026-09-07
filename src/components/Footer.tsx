@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-cement-900 text-white">
+    <footer className="bg-navy text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Company Info */}
@@ -26,10 +26,10 @@ export default function Footer() {
               />
               <div>
                 <h3 className="text-xl font-bold">RAI CEMENT</h3>
-                <p className="text-xs text-gray-400">LIMITED</p>
+                <p className="text-xs text-gray-300 font-medium tracking-wide">LIMITED</p>
               </div>
             </div>
-            <p className="text-gray-400 mb-6">
+            <p className="text-gray-300 text-center leading-relaxed">
               Established in January 2017, Rai Cement Limited is an ultra-modern manufacturing facility operating under the multi-billion-shilling Rai Group conglomeration, serving the regional construction sectors of East Africa.
             </p>
             <div className="flex space-x-4">
@@ -55,7 +55,7 @@ export default function Footer() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <h4 className="text-lg font-semibold mb-6 text-gold-400">Quick Links</h4>
+            <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-3">
               <li><a href="#home" className="text-gray-400 hover:text-white transition-colors">Home</a></li>
               <li><a href="#products" className="text-gray-400 hover:text-white transition-colors">Products</a></li>
@@ -92,24 +92,24 @@ export default function Footer() {
             <h4 className="text-lg font-semibold mb-6 text-gold-400">Contact Us</h4>
             <ul className="space-y-4">
               <li className="flex items-start space-x-3">
-                <Phone className="text-gold-400 mt-1" size={20} />
+                <Phone className="text-accent" size={18} />
                 <div>
-                  <p className="text-gray-400">Phone</p>
+                  <span className="text-gray-300">+254 746 392 602</span>
                   <a href="tel:+254746392602" className="text-white hover:text-gold-400 transition-colors">+254 746 392 602</a>
                 </div>
               </li>
               <li className="flex items-start space-x-3">
-                <Mail className="text-gold-400 mt-1" size={20} />
+                <Mail className="text-accent" size={18} />
                 <div>
-                  <p className="text-gray-400">Email</p>
+                  <span className="text-gray-300">raicement33@gmail.com</span>
                   <a href="mailto:raicement33@gmail.com" className="text-white hover:text-gold-400 transition-colors">raicement33@gmail.com</a>
                 </div>
               </li>
               <li className="flex items-start space-x-3">
-                <MapPin className="text-gold-400 mt-1" size={20} />
+                <MapPin className="text-accent" size={18} />
                 <div>
                   <p className="text-gray-400">Location</p>
-                  <p className="text-white">Awasi, Kericho-Kisumu Highway, Nyanza Region</p>
+                  <span className="text-gray-300">Awasi, Kericho-Kisumu Highway, Nyanza Region</span>
                 </div>
               </li>
             </ul>
@@ -122,10 +122,10 @@ export default function Footer() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="border-t border-gray-800 mt-12 pt-8 text-center"
+          className="border-t border-white/10 pt-8 text-center"
         >
           <p className="text-gray-400">
-            © {new Date().getFullYear()} Rai Cement Limited. All rights reserved.
+            &copy; {new Date().getFullYear()} Rai Cement Limited. All rights reserved.
           </p>
         </motion.div>
       </div>

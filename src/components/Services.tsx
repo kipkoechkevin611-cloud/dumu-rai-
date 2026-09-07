@@ -29,7 +29,7 @@ export default function Services() {
   ];
 
   return (
-    <section id="services" className="py-24 bg-cement-900">
+    <section id="services" className="py-24 bg-navy">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -39,9 +39,9 @@ export default function Services() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Our <span className="text-gold-400">Services</span>
+            Solutions for <span className="text-accent">Every Construction Project</span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
             Comprehensive cement solutions tailored to meet the diverse needs of construction projects across Kenya.
           </p>
         </motion.div>
@@ -54,13 +54,13 @@ export default function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-cement-800 p-8 rounded-2xl hover:bg-cement-700 transition-colors group"
+              className="bg-navy-light p-8 rounded-xl hover:bg-navy-dark transition-colors group border border-white/10"
             >
-              <div className="w-16 h-16 bg-gold-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-gold-500/30 transition-colors">
-                <service.icon className="text-gold-400" size={32} />
+              <div className="w-16 h-16 bg-accent/20 rounded-xl flex items-center justify-center mb-6 group-hover:bg-accent/30 transition-colors">
+                <service.icon className="text-accent" size={32} />
               </div>
               <h3 className="text-xl font-bold text-white mb-4">{service.title}</h3>
-              <p className="text-gray-400">{service.description}</p>
+              <p className="text-gray-300 leading-relaxed">{service.description}</p>
             </motion.div>
           ))}
         </div>
@@ -71,7 +71,7 @@ export default function Services() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-12 relative h-64 rounded-2xl overflow-hidden"
+          className="mt-16 relative h-64 rounded-xl overflow-hidden border border-[#F7F7F7]/10"
         >
           <Image
             src="/assets/e4xhH-2BLAuWMNMmikfJe-7gUOj6Jcwc-yZXHjfzMhnXYmhbS2LQUfDHaKaLwPctcqZsaTRDJRatZvFJ59RAx6pPU9XkDQ0ocKbXcvAkkA0Iy8nNkpgutUmJB3SU28yOXEwL6fWp0mkO6mw7HWv7r2LXHfVhHn2b0mXdR5TEB68wTtJZiWLgpl78jr2raUS1.jpeg"
@@ -88,17 +88,17 @@ export default function Services() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-16 bg-gradient-to-r from-gold-500 to-gold-600 rounded-2xl p-8 md:p-12 text-center"
+          className="mt-16 bg-gradient-to-r from-accent to-accent-light rounded-xl p-8 md:p-12 text-center"
         >
-          <h3 className="text-3xl font-bold text-white mb-4">
+          <h3 className="text-3xl font-bold text-navy mb-4">
             Need Bulk Cement for Your Project?
           </h3>
-          <p className="text-white/90 mb-8 text-lg">
+          <p className="text-navy-dark/90 mb-8 text-lg leading-relaxed">
             Contact us for special pricing on bulk orders and dedicated project support.
           </p>
           <a
             href="#contact"
-            className="inline-block bg-white text-gold-600 px-8 py-4 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+            className="inline-block bg-white text-navy px-8 py-4 rounded-lg font-semibold hover:bg-background transition-colors"
           >
             Request Quote
           </a>

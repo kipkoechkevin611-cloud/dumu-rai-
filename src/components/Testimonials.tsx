@@ -29,7 +29,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="py-24 bg-cement-50">
+    <section className="py-24 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -38,10 +38,10 @@ export default function Testimonials() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-cement-900 mb-4">
-            What Our <span className="text-gold-600">Clients Say</span>
+          <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
+            Trusted by <span className="text-primary">Builders Across Kenya</span>
           </h2>
-          <p className="text-xl text-cement-600 max-w-3xl mx-auto">
+          <p className="text-xl text-text-secondary max-w-3xl mx-auto leading-relaxed">
             Trusted by construction professionals across Kenya for quality, reliability, and exceptional service.
           </p>
         </motion.div>
@@ -54,19 +54,19 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-white p-8 rounded-2xl shadow-lg relative"
+              className="bg-white p-8 rounded-xl shadow-sm relative border border-border hover:shadow-md transition-shadow"
             >
-              <Quote className="text-gold-500/20 absolute top-6 right-6" size={64} />
+              <Quote className="text-primary/10 absolute top-6 right-6" size={64} />
               <div className="flex items-center space-x-1 mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
-                  <Star key={i} className="text-gold-500 fill-gold-500" size={20} />
+                  <Star key={i} className="text-accent fill-accent" size={20} />
                 ))}
               </div>
-              <p className="text-cement-700 mb-6 italic">{testimonial.content}</p>
+              <p className="text-text-secondary mb-6 italic leading-relaxed">{testimonial.content}</p>
               <div>
-                <div className="font-bold text-cement-900">{testimonial.name}</div>
-                <div className="text-cement-600 text-sm">{testimonial.role}</div>
-                <div className="text-gold-600 text-sm">{testimonial.company}</div>
+                <div className="font-bold text-text-primary">{testimonial.name}</div>
+                <div className="text-text-secondary text-sm">{testimonial.role}</div>
+                <div className="text-primary text-sm font-medium">{testimonial.company}</div>
               </div>
             </motion.div>
           ))}

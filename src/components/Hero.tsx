@@ -8,7 +8,7 @@ export default function Hero() {
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-cement-900/90 via-cement-800/85 to-cement-900/90" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-navy/90 to-primary/95" />
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
@@ -31,9 +31,9 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="inline-block mb-6"
           >
-            <div className="flex items-center justify-center space-x-2 bg-gold-500/20 backdrop-blur-sm border border-gold-500/30 rounded-full px-6 py-2">
-              <Truck className="text-gold-400" size={20} />
-              <span className="text-gold-400 font-semibold text-sm">Nationwide Delivery Available</span>
+            <div className="flex items-center justify-center space-x-2 bg-accent/20 backdrop-blur-sm border border-accent/30 rounded-full px-6 py-2">
+              <Truck className="text-accent" size={20} />
+              <span className="text-accent font-semibold text-sm tracking-wide">Nationwide Delivery Available</span>
             </div>
           </motion.div>
 
@@ -45,7 +45,7 @@ export default function Hero() {
           >
             Engineering Kenya&apos;s
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold-400 to-gold-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-accent-light">
               Strongest Foundations
             </span>
           </motion.h1>
@@ -54,7 +54,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto"
+            className="text-xl md:text-2xl text-gray-200 mb-10 max-w-3xl mx-auto leading-relaxed"
           >
             Premium quality cement products for residential, commercial, and infrastructure projects.
             ISO certified and trusted across Kenya.
@@ -68,14 +68,14 @@ export default function Hero() {
           >
             <a
               href="#products"
-              className="group flex items-center space-x-2 bg-gold-500 text-white px-8 py-4 rounded-lg hover:bg-gold-600 transition-all duration-300 shadow-lg hover:shadow-gold-500/25"
+              className="group flex items-center space-x-2 bg-accent text-navy px-8 py-4 rounded-lg hover:bg-accent-dark transition-all duration-300 shadow-lg hover:shadow-accent/25 font-semibold tracking-wide"
             >
               <span className="font-semibold text-lg">Order Cement Now</span>
               <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
             </a>
             <a
               href="#contact"
-              className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-lg hover:bg-white/20 transition-all duration-300"
+              className="flex items-center space-x-2 bg-white/10 backdrop-blur-sm border border-white/30 text-white px-8 py-4 rounded-lg hover:bg-white/20 transition-all duration-300 font-semibold tracking-wide"
             >
               <span className="font-semibold text-lg">Request Bulk Quote</span>
             </a>
@@ -90,22 +90,22 @@ export default function Hero() {
           >
             <div className="text-center">
               <div className="text-4xl font-bold text-white">2017</div>
-              <div className="text-gray-400 text-sm">Established</div>
+              <div className="text-gray-300 text-sm font-medium">Established</div>
             </div>
-            <div className="w-px h-12 bg-gray-600 hidden md:block" />
+            <div className="w-px h-12 bg-white/20 hidden md:block" />
             <div className="text-center">
               <div className="text-4xl font-bold text-white">EAS 18-1</div>
-              <div className="text-gray-400 text-sm">Standards</div>
+              <div className="text-gray-300 text-sm font-medium">Standards</div>
             </div>
-            <div className="w-px h-12 bg-gray-600 hidden md:block" />
+            <div className="w-px h-12 bg-white/20 hidden md:block" />
             <div className="text-center">
               <div className="text-4xl font-bold text-white">East Africa</div>
-              <div className="text-gray-400 text-sm">Regional Service</div>
+              <div className="text-gray-300 text-sm font-medium">Regional Service</div>
             </div>
-            <div className="w-px h-12 bg-gray-600 hidden md:block" />
+            <div className="w-px h-12 bg-white/20 hidden md:block" />
             <div className="text-center">
               <div className="text-4xl font-bold text-white">ISO</div>
-              <div className="text-gray-400 text-sm">Certified</div>
+              <div className="text-gray-300 text-sm font-medium">Certified</div>
             </div>
           </motion.div>
         </motion.div>
@@ -121,9 +121,9 @@ export default function Hero() {
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
-          className="w-6 h-10 border-2 border-white/50 rounded-full flex items-start justify-center p-2"
+          className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2"
         >
-          <div className="w-1 h-3 bg-white/50 rounded-full" />
+          <div className="w-1 h-3 bg-white/30 rounded-full" />
         </motion.div>
       </motion.div>
     </section>

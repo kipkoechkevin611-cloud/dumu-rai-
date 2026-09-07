@@ -99,7 +99,7 @@ export default function Products() {
   };
 
   return (
-    <section id="products" className="py-24 bg-cement-50">
+    <section id="products" className="py-24 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -108,10 +108,10 @@ export default function Products() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-cement-900 mb-4">
-            Our Premium <span className="text-gold-600">Cement Products</span>
+          <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
+            Cement You Can <span className="text-primary">Build On</span>
           </h2>
-          <p className="text-xl text-cement-600 max-w-3xl mx-auto">
+          <p className="text-xl text-text-secondary max-w-3xl mx-auto leading-relaxed">
             ISO-certified cement products manufactured to international standards for superior quality and performance.
           </p>
         </motion.div>
@@ -124,7 +124,7 @@ export default function Products() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group"
+              className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 group border border-border"
             >
               <div className="relative h-64 overflow-hidden">
                 <Image
@@ -134,32 +134,32 @@ export default function Products() {
                   height={256}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
-                <div className="absolute top-4 right-4 bg-gold-500 text-white px-4 py-2 rounded-full font-semibold">
+                <div className="absolute top-4 right-4 bg-accent text-navy px-4 py-2 rounded-lg font-semibold shadow-md">
                   {product.price}
                 </div>
               </div>
 
               <div className="p-6">
                 <div className="flex items-center space-x-2 mb-3">
-                  <Package className="text-gold-500" size={24} />
-                  <h3 className="text-2xl font-bold text-cement-900">{product.name}</h3>
+                  <Package className="text-primary" size={24} />
+                  <h3 className="text-2xl font-bold text-text-primary">{product.name}</h3>
                 </div>
 
-                <p className="text-cement-600 mb-2">{product.description}</p>
-                <p className="text-2xl font-bold text-gold-600 mb-4">{product.price}</p>
+                <p className="text-text-secondary mb-2 leading-relaxed">{product.description}</p>
+                <p className="text-2xl font-bold text-primary mb-4">{product.price}</p>
 
                 <div className="space-y-2 mb-6">
                   {product.features.map((feature, idx) => (
                     <div key={idx} className="flex items-center space-x-2">
-                      <CheckCircle className="text-green-500" size={16} />
-                      <span className="text-sm text-cement-700">{feature}</span>
+                      <CheckCircle className="text-primary" size={16} />
+                      <span className="text-sm text-text-secondary">{feature}</span>
                     </div>
                   ))}
                 </div>
 
                 <button
                   onClick={() => addToCart(product)}
-                  className="w-full flex items-center justify-center space-x-2 bg-cement-900 text-white py-3 rounded-lg font-semibold hover:bg-cement-800 transition-all duration-300"
+                  className="w-full flex items-center justify-center space-x-2 bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300"
                 >
                   <ShoppingCart size={20} />
                   <span>Add to Cart</span>
@@ -189,7 +189,7 @@ export default function Products() {
             >
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-cement-900">Shopping Cart</h2>
+                  <h2 className="text-2xl font-bold text-text-primary">Shopping Cart</h2>
                   <button
                     onClick={() => setIsCartOpen(false)}
                     className="text-gray-400 hover:text-cement-900 transition-colors"
@@ -201,7 +201,7 @@ export default function Products() {
                 {cart.length === 0 ? (
                   <div className="text-center py-12">
                     <ShoppingCart className="text-cement-300 mx-auto mb-4" size={48} />
-                    <p className="text-cement-600">Your cart is empty</p>
+                    <p className="text-text-secondary">Your cart is empty</p>
                   </div>
                 ) : (
                   <>
@@ -209,7 +209,7 @@ export default function Products() {
                       {cart.map((item) => (
                         <div
                           key={item.id}
-                          className="flex items-center gap-4 bg-cement-50 p-4 rounded-lg"
+                          className="flex items-center gap-4 bg-background p-4 rounded-lg border border-border"
                         >
                           <Image
                             src={item.image}
@@ -219,19 +219,19 @@ export default function Products() {
                             className="w-16 h-16 object-cover rounded"
                           />
                           <div className="flex-1">
-                            <h3 className="font-semibold text-cement-900">{item.name}</h3>
-                            <p className="text-gold-600 font-semibold">{item.price}</p>
+                            <h3 className="font-semibold text-text-primary">{item.name}</h3>
+                            <p className="text-primary font-semibold">{item.price}</p>
                             <div className="flex items-center gap-2 mt-2">
                               <button
                                 onClick={() => updateQuantity(item.id, -1)}
-                                className="w-8 h-8 bg-cement-200 rounded flex items-center justify-center hover:bg-cement-300 transition-colors"
+                                className="w-8 h-8 bg-border rounded flex items-center justify-center hover:bg-border-dark transition-colors"
                               >
                                 <Minus size={16} />
                               </button>
-                              <span className="w-8 text-center font-semibold">{item.quantity}</span>
+                              <span className="w-8 text-center font-semibold text-text-primary">{item.quantity}</span>
                               <button
                                 onClick={() => updateQuantity(item.id, 1)}
-                                className="w-8 h-8 bg-cement-200 rounded flex items-center justify-center hover:bg-cement-300 transition-colors"
+                                className="w-8 h-8 bg-border rounded flex items-center justify-center hover:bg-border-dark transition-colors"
                               >
                                 <Plus size={16} />
                               </button>
@@ -248,7 +248,7 @@ export default function Products() {
                     </div>
 
                     <div className="border-t border-gray-200 pt-4 mb-6">
-                      <div className="flex justify-between text-xl font-bold text-cement-900">
+                      <div className="flex justify-between text-xl font-bold text-text-primary">
                         <span>Total</span>
                         <span>KES {getTotal().toLocaleString()}</span>
                       </div>
@@ -258,13 +258,13 @@ export default function Products() {
                       <a
                         href="/cart"
                         onClick={() => setIsCartOpen(false)}
-                        className="block w-full bg-gradient-to-r from-gold-500 to-gold-600 text-white py-3 rounded-lg font-semibold hover:from-gold-600 hover:to-gold-700 transition-all text-center"
+                        className="block w-full bg-gradient-to-r from-accent to-accent-light text-navy py-3 rounded-lg font-semibold hover:from-accent-dark hover:to-accent transition-all text-center"
                       >
                         View Full Cart
                       </a>
                       <button
                         onClick={() => setIsCartOpen(false)}
-                        className="w-full bg-cement-100 text-cement-900 py-3 rounded-lg font-semibold hover:bg-cement-200 transition-all"
+                        className="w-full bg-background text-text-primary py-3 rounded-lg font-semibold hover:bg-border transition-all border border-border"
                       >
                         Continue Shopping
                       </button>
