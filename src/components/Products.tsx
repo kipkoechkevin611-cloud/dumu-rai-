@@ -5,65 +5,23 @@ import { Package, CheckCircle, ShoppingCart, X, Plus, Minus, Trash2 } from "luci
 import { useState } from "react";
 import Image from "next/image";
 import { products, type Product } from "@/lib/products";
-
-interface CartItem {
-  id: string;
-  name: string;
-  price: string;
-  image: string;
-  quantity: number;
-}
+import { useCart } from "@/contexts/CartContext";
 
 export default function Products() {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const { cart, addToCart, updateQuantity, removeFromCart, getTotal } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
 
-  const addToCart = (product: Product) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.id === product.id);
-      if (existingItem) {
-        return prevCart.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
-        );
-      }
-      return [
-        ...prevCart,
-        {
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          image: product.image,
-          quantity: 1,
-        },
-      ];
+  const handleAddToCart = (product: Product) => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
     });
     setIsCartOpen(true);
     setShowNotification(true);
     setTimeout(() => setShowNotification(false), 3000);
-  };
-
-  const updateQuantity = (id: string, delta: number) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === id
-          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
-          : item
-      )
-    );
-  };
-
-  const removeFromCart = (id: string) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
-  };
-
-  const getTotal = () => {
-    return cart.reduce((total, item) => {
-      const price = parseFloat(item.price.replace("KES ", ""));
-      return total + price * item.quantity;
-    }, 0);
   };
 
   return (
@@ -126,7 +84,7 @@ export default function Products() {
                 </div>
 
                 <button
-                  onClick={() => addToCart(product)}
+                  onClick={() => handleAddToCart(product)}
                   className="w-full flex items-center justify-center space-x-2 bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300"
                 >
                   <ShoppingCart size={20} />
@@ -200,14 +158,14 @@ export default function Products() {
                             <p className="text-primary font-semibold">{item.price}</p>
                             <div className="flex items-center gap-2 mt-2">
                               <button
-                                onClick={() => updateQuantity(item.id, -1)}
+                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                 className="w-8 h-8 bg-border rounded flex items-center justify-center hover:bg-border-dark transition-colors"
                               >
                                 <Minus size={16} />
                               </button>
                               <span className="w-8 text-center font-semibold text-text-primary">{item.quantity}</span>
                               <button
-                                onClick={() => updateQuantity(item.id, 1)}
+                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                 className="w-8 h-8 bg-border rounded flex items-center justify-center hover:bg-border-dark transition-colors"
                               >
                                 <Plus size={16} />

@@ -7,7 +7,7 @@ interface OrderData {
     phone: string;
     email: string;
     location: string;
-    quantity: string;
+    notes: string;
   };
   cartItems: Array<{
     id: string;
@@ -92,8 +92,14 @@ export async function POST(request: NextRequest) {
             </div>
             <div class="info-row">
               <span class="info-label">Quantity:</span>
-              <span class="info-value">${customerDetails.quantity} bags</span>
+              <span class="info-value">${cartItems.reduce((sum, item) => sum + item.quantity, 0)} bags</span>
             </div>
+            ${customerDetails.notes ? `
+            <div class="info-row">
+              <span class="info-label">Notes:</span>
+              <span class="info-value">${customerDetails.notes}</span>
+            </div>
+            ` : ''}
           </div>
 
           <div class="section">

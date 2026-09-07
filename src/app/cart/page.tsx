@@ -1,39 +1,23 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Trash2, ArrowRight, X, User, Phone, Mail, MapPin } from "lucide-react";
+import { ShoppingBag, Trash2, ArrowRight, User, Phone, Mail, MapPin } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-
-interface CartItem {
-  id: string;
-  name: string;
-  price: string;
-  image: string;
-  quantity: number;
-}
+import { useCart } from "@/contexts/CartContext";
 
 interface CustomerDetails {
   fullName: string;
   phone: string;
   email: string;
   location: string;
-  quantity: string;
+  notes: string;
 }
 
 export default function CartPage() {
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: "ppc-32.5n",
-      name: "DUMU 32.5N",
-      price: "KES 684",
-      image: "/assets/32.4N.jpeg",
-      quantity: 1,
-    },
-  ]);
-
+  const { cart, updateQuantity, removeFromCart, getTotal, clearCart } = useCart();
   const [showSuccessPopup, setShowSuccessPopup] = useState(false);
   const [showErrorPopup, setShowErrorPopup] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -43,32 +27,26 @@ export default function CartPage() {
     phone: "",
     email: "",
     location: "",
-    quantity: "",
+    notes: "",
   });
 
-  const updateQuantity = (id: string, newQuantity: number) => {
+  const handleUpdateQuantity = (id: string, newQuantity: number) => {
     if (newQuantity < 1) return;
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
+    updateQuantity(id, newQuantity);
   };
 
   const removeItem = (id: string) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
-  };
-
-  const getTotal = () => {
-    return cartItems.reduce((total, item) => {
-      const price = parseFloat(item.price.replace("KES ", ""));
-      return total + price * item.quantity;
-    }, 0);
+    removeFromCart(id);
   };
 
   const handleCheckout = async () => {
-    if (!customerDetails.fullName || !customerDetails.phone || !customerDetails.location || !customerDetails.quantity) {
-      alert("Please fill in your name, phone, location, and quantity to complete your order.");
+    if (!customerDetails.fullName || !customerDetails.phone || !customerDetails.location) {
+      alert("Please fill in your name, phone, and location to complete your order.");
+      return;
+    }
+
+    if (cart.length === 0) {
+      alert("Your cart is empty.");
       return;
     }
 
@@ -83,7 +61,7 @@ export default function CartPage() {
         },
         body: JSON.stringify({
           customerDetails,
-          cartItems,
+          cartItems: cart,
           total: getTotal(),
         }),
       });
@@ -92,14 +70,13 @@ export default function CartPage() {
 
       if (result.success) {
         setShowSuccessPopup(true);
-        // Clear cart after successful order
-        setCartItems([]);
+        clearCart();
         setCustomerDetails({
           fullName: "",
           phone: "",
           email: "",
           location: "",
-          quantity: "",
+          notes: "",
         });
       } else {
         setShowErrorPopup(true);
@@ -131,7 +108,7 @@ export default function CartPage() {
             </p>
           </motion.div>
 
-          {cartItems.length === 0 ? (
+          {cart.length === 0 ? (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -158,7 +135,7 @@ export default function CartPage() {
                 transition={{ duration: 0.6 }}
                 className="lg:col-span-2 space-y-4"
               >
-                {cartItems.map((item, index) => (
+                {cart.map((item, index) => (
                   <motion.div
                     key={item.id}
                     initial={{ opacity: 0, y: 20 }}
@@ -178,9 +155,12 @@ export default function CartPage() {
                         {item.name}
                       </h3>
                       <p className="text-primary font-semibold mb-4">{item.price}</p>
+                      <p className="text-text-secondary text-sm mb-4">
+                        Item Total: KES {(parseFloat(item.price.replace("KES ", "")) * item.quantity).toLocaleString()}
+                      </p>
                       <div className="flex items-center gap-4">
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
                           className="w-10 h-10 bg-border rounded-lg flex items-center justify-center hover:bg-border-dark transition-colors"
                         >
                           -
@@ -189,7 +169,7 @@ export default function CartPage() {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
                           className="w-10 h-10 bg-border rounded-lg flex items-center justify-center hover:bg-border-dark transition-colors"
                         >
                           +
@@ -238,58 +218,57 @@ export default function CartPage() {
                   <h3 className="text-lg font-semibold text-text-primary mb-4">
                     Your Details
                   </h3>
-                  <div className="space-y-3">
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                      <input
-                        type="text"
-                        placeholder="Full Name *"
-                        value={customerDetails.fullName}
-                        onChange={(e) => setCustomerDetails({ ...customerDetails, fullName: e.target.value })}
-                        className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                      />
+                    <div className="space-y-3">
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <input
+                          type="text"
+                          placeholder="Full Name *"
+                          value={customerDetails.fullName}
+                          onChange={(e) => setCustomerDetails({ ...customerDetails, fullName: e.target.value })}
+                          className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        />
+                      </div>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <input
+                          type="tel"
+                          placeholder="Phone Number *"
+                          value={customerDetails.phone}
+                          onChange={(e) => setCustomerDetails({ ...customerDetails, phone: e.target.value })}
+                          className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        />
+                      </div>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <input
+                          type="email"
+                          placeholder="Email"
+                          value={customerDetails.email}
+                          onChange={(e) => setCustomerDetails({ ...customerDetails, email: e.target.value })}
+                          className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        />
+                      </div>
+                      <div className="relative">
+                        <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                        <input
+                          type="text"
+                          placeholder="Exact Location *"
+                          value={customerDetails.location}
+                          onChange={(e) => setCustomerDetails({ ...customerDetails, location: e.target.value })}
+                          className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        />
+                      </div>
+                      <div className="relative">
+                        <textarea
+                          placeholder="Additional Notes (Optional)"
+                          value={customerDetails.notes}
+                          onChange={(e) => setCustomerDetails({ ...customerDetails, notes: e.target.value })}
+                          className="w-full pl-4 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                          rows={3}
+                        />
+                      </div>
                     </div>
-                    <div className="relative">
-                      <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                      <input
-                        type="tel"
-                        placeholder="Phone Number *"
-                        value={customerDetails.phone}
-                        onChange={(e) => setCustomerDetails({ ...customerDetails, phone: e.target.value })}
-                        className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                      />
-                    </div>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                      <input
-                        type="email"
-                        placeholder="Email *"
-                        value={customerDetails.email}
-                        onChange={(e) => setCustomerDetails({ ...customerDetails, email: e.target.value })}
-                        className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                      />
-                    </div>
-                    <div className="relative">
-                      <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                      <input
-                        type="text"
-                        placeholder="Exact Location *"
-                        value={customerDetails.location}
-                        onChange={(e) => setCustomerDetails({ ...customerDetails, location: e.target.value })}
-                        className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                      />
-                    </div>
-                    <div className="relative">
-                      <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                      <input
-                        type="text"
-                        placeholder="Quantity (bags) *"
-                        value={customerDetails.quantity}
-                        onChange={(e) => setCustomerDetails({ ...customerDetails, quantity: e.target.value })}
-                        className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                      />
-                    </div>
-                  </div>
                 </div>
 
                 <button

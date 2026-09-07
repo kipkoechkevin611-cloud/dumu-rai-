@@ -7,50 +7,24 @@ import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { type Product } from "@/lib/products";
-
-interface CartItem {
-  id: string;
-  name: string;
-  price: string;
-  image: string;
-  quantity: number;
-}
+import { useCart } from "@/contexts/CartContext";
 
 interface ProductDetailContentProps {
   product: Product;
 }
 
 export default function ProductDetailContent({ product }: ProductDetailContentProps) {
+  const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [showNotification, setShowNotification] = useState(false);
 
-  const addToCart = () => {
-    // Get existing cart from localStorage
-    const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-    
-    const existingItem = existingCart.find((item: CartItem) => item.id === product.id);
-    let updatedCart;
-    
-    if (existingItem) {
-      updatedCart = existingCart.map((item: CartItem) =>
-        item.id === product.id
-          ? { ...item, quantity: item.quantity + quantity }
-          : item
-      );
-    } else {
-      updatedCart = [
-        ...existingCart,
-        {
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          image: product.image,
-          quantity: quantity,
-        },
-      ];
-    }
-    
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
+  const handleAddToCart = () => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.image,
+    });
     setShowNotification(true);
     setTimeout(() => setShowNotification(false), 3000);
   };
@@ -197,7 +171,7 @@ export default function ProductDetailContent({ product }: ProductDetailContentPr
               {/* Action Buttons */}
               <div className="space-y-4">
                 <button
-                  onClick={addToCart}
+                  onClick={handleAddToCart}
                   className="w-full flex items-center justify-center space-x-2 bg-primary text-white py-4 rounded-lg font-semibold hover:bg-primary-dark transition-all duration-300"
                 >
                   <ShoppingCart size={20} />
