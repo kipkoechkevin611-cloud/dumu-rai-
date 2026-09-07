@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Package, CheckCircle, ShoppingCart } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Package, CheckCircle, ShoppingCart, X, Plus, Minus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 
@@ -12,6 +12,14 @@ interface Product {
   price: string;
   image: string;
   features: string[];
+}
+
+interface CartItem {
+  id: string;
+  name: string;
+  price: string;
+  image: string;
+  quantity: number;
 }
 
 const products: Product[] = [
@@ -42,6 +50,53 @@ const products: Product[] = [
 ];
 
 export default function Products() {
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const addToCart = (product: Product) => {
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((item) => item.id === product.id);
+      if (existingItem) {
+        return prevCart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+      return [
+        ...prevCart,
+        {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          quantity: 1,
+        },
+      ];
+    });
+    setIsCartOpen(true);
+  };
+
+  const updateQuantity = (id: string, delta: number) => {
+    setCart((prevCart) =>
+      prevCart.map((item) =>
+        item.id === id
+          ? { ...item, quantity: Math.max(1, item.quantity + delta) }
+          : item
+      )
+    );
+  };
+
+  const removeFromCart = (id: string) => {
+    setCart((prevCart) => prevCart.filter((item) => item.id !== id));
+  };
+
+  const getTotal = () => {
+    return cart.reduce((total, item) => {
+      const price = parseFloat(item.price.replace("KES ", ""));
+      return total + price * item.quantity;
+    }, 0);
+  };
 
   return (
     <section id="products" className="py-24 bg-cement-50">
@@ -102,19 +157,125 @@ export default function Products() {
                   ))}
                 </div>
 
-                <a
-                  href="/cart"
+                <button
+                  onClick={() => addToCart(product)}
                   className="w-full flex items-center justify-center space-x-2 bg-cement-900 text-white py-3 rounded-lg font-semibold hover:bg-cement-800 transition-all duration-300"
                 >
                   <ShoppingCart size={20} />
                   <span>Add to Cart</span>
-                </a>
+                </button>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
 
+      {/* Cart Modal */}
+      <AnimatePresence>
+        {isCartOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsCartOpen(false)}
+              className="fixed inset-0 bg-black/50 z-50"
+            />
+            <motion.div
+              initial={{ opacity: 0, x: 400 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 400 }}
+              className="fixed right-0 top-0 h-full w-full max-w-md bg-white shadow-2xl z-50 overflow-y-auto"
+            >
+              <div className="p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-cement-900">Shopping Cart</h2>
+                  <button
+                    onClick={() => setIsCartOpen(false)}
+                    className="text-gray-400 hover:text-cement-900 transition-colors"
+                  >
+                    <X size={24} />
+                  </button>
+                </div>
+
+                {cart.length === 0 ? (
+                  <div className="text-center py-12">
+                    <ShoppingCart className="text-cement-300 mx-auto mb-4" size={48} />
+                    <p className="text-cement-600">Your cart is empty</p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="space-y-4 mb-6">
+                      {cart.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex items-center gap-4 bg-cement-50 p-4 rounded-lg"
+                        >
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            width={64}
+                            height={64}
+                            className="w-16 h-16 object-cover rounded"
+                          />
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-cement-900">{item.name}</h3>
+                            <p className="text-gold-600 font-semibold">{item.price}</p>
+                            <div className="flex items-center gap-2 mt-2">
+                              <button
+                                onClick={() => updateQuantity(item.id, -1)}
+                                className="w-8 h-8 bg-cement-200 rounded flex items-center justify-center hover:bg-cement-300 transition-colors"
+                              >
+                                <Minus size={16} />
+                              </button>
+                              <span className="w-8 text-center font-semibold">{item.quantity}</span>
+                              <button
+                                onClick={() => updateQuantity(item.id, 1)}
+                                className="w-8 h-8 bg-cement-200 rounded flex items-center justify-center hover:bg-cement-300 transition-colors"
+                              >
+                                <Plus size={16} />
+                              </button>
+                            </div>
+                          </div>
+                          <button
+                            onClick={() => removeFromCart(item.id)}
+                            className="text-red-500 hover:text-red-600 transition-colors"
+                          >
+                            <Trash2 size={20} />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="border-t border-gray-200 pt-4 mb-6">
+                      <div className="flex justify-between text-xl font-bold text-cement-900">
+                        <span>Total</span>
+                        <span>KES {getTotal().toLocaleString()}</span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-3">
+                      <a
+                        href="/cart"
+                        onClick={() => setIsCartOpen(false)}
+                        className="block w-full bg-gradient-to-r from-gold-500 to-gold-600 text-white py-3 rounded-lg font-semibold hover:from-gold-600 hover:to-gold-700 transition-all text-center"
+                      >
+                        View Full Cart
+                      </a>
+                      <button
+                        onClick={() => setIsCartOpen(false)}
+                        className="w-full bg-cement-100 text-cement-900 py-3 rounded-lg font-semibold hover:bg-cement-200 transition-all"
+                      >
+                        Continue Shopping
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
