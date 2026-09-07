@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ShoppingBag, Trash2, ArrowRight, X, User, Phone, Mail, MapPin } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -160,9 +161,11 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     className="bg-white rounded-xl shadow-lg p-6 flex items-center gap-6"
                   >
-                    <img
+                    <Image
                       src={item.image}
                       alt={item.name}
+                      width={96}
+                      height={96}
                       className="w-24 h-24 object-cover rounded-lg"
                     />
                     <div className="flex-1">

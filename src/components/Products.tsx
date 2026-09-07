@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Package, CheckCircle, ShoppingCart } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 
 interface Product {
   id: string;
@@ -71,9 +72,11 @@ export default function Products() {
               className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 group"
             >
               <div className="relative h-64 overflow-hidden">
-                <img
+                <Image
                   src={product.image}
                   alt={product.name}
+                  width={400}
+                  height={256}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute top-4 right-4 bg-gold-500 text-white px-4 py-2 rounded-full font-semibold">

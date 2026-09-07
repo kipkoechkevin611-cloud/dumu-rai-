@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Award, Globe, Users, Wrench } from "lucide-react";
+import Image from "next/image";
 
 export default function About() {
   const features = [
@@ -66,9 +67,11 @@ export default function About() {
             className="space-y-6"
           >
             <div className="relative h-48 rounded-2xl overflow-hidden">
-              <img
+              <Image
                 src="/assets/PERMIT.jpeg"
                 alt="Permit Photo"
+                width={800}
+                height={192}
                 className="w-full h-full object-cover"
               />
               <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white p-4">

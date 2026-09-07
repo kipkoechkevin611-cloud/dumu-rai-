@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Facebook, Twitter, Linkedin, Instagram } from "lucide-react";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -16,9 +17,11 @@ export default function Footer() {
             transition={{ duration: 0.5 }}
           >
             <div className="flex items-center space-x-2 mb-6">
-              <img
+              <Image
                 src="/assets/logo.jpeg"
                 alt="Rai Cement Limited Logo"
+                width={48}
+                height={48}
                 className="w-12 h-12 object-contain"
               />
               <div>

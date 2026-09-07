@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Truck, Building2, Factory, ShieldCheck } from "lucide-react";
+import Image from "next/image";
 
 export default function Services() {
   const services = [
@@ -72,9 +73,11 @@ export default function Services() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-12 relative h-64 rounded-2xl overflow-hidden"
         >
-          <img
+          <Image
             src="/assets/e4xhH-2BLAuWMNMmikfJe-7gUOj6Jcwc-yZXHjfzMhnXYmhbS2LQUfDHaKaLwPctcqZsaTRDJRatZvFJ59RAx6pPU9XkDQ0ocKbXcvAkkA0Iy8nNkpgutUmJB3SU28yOXEwL6fWp0mkO6mw7HWv7r2LXHfVhHn2b0mXdR5TEB68wTtJZiWLgpl78jr2raUS1.jpeg"
             alt="Rai Cement Delivery Fleet"
+            width={1200}
+            height={256}
             className="w-full h-full object-cover"
           />
         </motion.div>

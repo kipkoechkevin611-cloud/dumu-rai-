@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, ShoppingCart } from "lucide-react";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -43,9 +44,11 @@ export default function Navbar() {
             transition={{ delay: 0.2 }}
             className="flex items-center space-x-2"
           >
-            <img
+            <Image
               src="/assets/logo.jpeg"
               alt="Rai Cement Limited Logo"
+              width={48}
+              height={48}
               className="w-12 h-12 object-contain"
             />
             <div>
