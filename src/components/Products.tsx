@@ -4,15 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Package, CheckCircle, ShoppingCart, X, Plus, Minus, Trash2 } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
-
-interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: string;
-  image: string;
-  features: string[];
-}
+import { products, type Product } from "@/lib/products";
 
 interface CartItem {
   id: string;
@@ -22,36 +14,10 @@ interface CartItem {
   quantity: number;
 }
 
-const products: Product[] = [
-  {
-    id: "ppc-32.5n",
-    name: "DUMU 32.5N",
-    description: "Portland Pozzolana Cement ideal for general construction, plastering, and masonry work. Enhanced durability and workability.",
-    price: "KES 684",
-    image: "/assets/32.4N.jpeg",
-    features: ["High durability", "Excellent workability", "Cost-effective", "Eco-friendly"],
-  },
-  {
-    id: "plc-42.5n",
-    name: "DUMU ULTRA 42.5",
-    description: "Portland Limestone Cement for structural applications. Perfect for foundations, columns, and load-bearing structures.",
-    price: "KES 788.50",
-    image: "/assets/42.5N.jpeg",
-    features: ["High strength", "Structural grade", "Superior bonding", "Long-lasting"],
-  },
-  {
-    id: "opc-42.5n",
-    name: "DUMU ULTRA PLUS 42.5",
-    description: "Ordinary Portland Cement premium grade for high-strength applications. Ideal for bridges, dams, and heavy infrastructure.",
-    price: "KES 864.50",
-    image: "/assets/42.5N ULTRA PLUS.jpeg",
-    features: ["Premium quality", "Maximum strength", "Fast setting", "Weather resistant"],
-  },
-];
-
 export default function Products() {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   const addToCart = (product: Product) => {
     setCart((prevCart) => {
@@ -75,6 +41,8 @@ export default function Products() {
       ];
     });
     setIsCartOpen(true);
+    setShowNotification(true);
+    setTimeout(() => setShowNotification(false), 3000);
   };
 
   const updateQuantity = (id: string, delta: number) => {
@@ -164,6 +132,15 @@ export default function Products() {
                   <ShoppingCart size={20} />
                   <span>Add to Cart</span>
                 </button>
+                <a
+                  href={`/products/${product.id}`}
+                  className="block w-full flex items-center justify-center space-x-2 bg-background text-primary py-3 rounded-lg font-semibold hover:bg-border transition-all duration-300 border border-border mt-3"
+                >
+                  <span>View More Details</span>
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
               </div>
             </motion.div>
           ))}
@@ -274,6 +251,25 @@ export default function Products() {
               </div>
             </motion.div>
           </>
+        )}
+      </AnimatePresence>
+
+      {/* Success Notification Toast */}
+      <AnimatePresence>
+        {showNotification && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-8 left-1/2 transform -translate-x-1/2 z-50"
+          >
+            <div className="bg-primary text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-2">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              <span className="font-medium">Product added to cart</span>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </section>

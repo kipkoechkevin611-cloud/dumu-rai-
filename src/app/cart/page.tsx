@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, Trash2, ArrowRight, X, User, Phone, Mail, MapPin } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
@@ -33,6 +33,10 @@ export default function CartPage() {
       quantity: 1,
     },
   ]);
+
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showErrorPopup, setShowErrorPopup] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [customerDetails, setCustomerDetails] = useState<CustomerDetails>({
     fullName: "",
@@ -68,49 +72,50 @@ export default function CartPage() {
       return;
     }
 
-    const message = `
-*SHOPPING CART - RAI CEMENT LIMITED*
+    setIsSubmitting(true);
 
-� *Order Summary:*
-${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).join("\n")}
-
-� *Customer Details:*
-• Name: ${customerDetails.fullName}
-• Phone: ${customerDetails.phone}
-• Email: ${customerDetails.email || "Not provided"}
-• Location: ${customerDetails.location}
-• Quantity: ${customerDetails.quantity}
-
-💰 *Total: KES ${getTotal().toLocaleString()}
-
-📍 *Location: Awasi, Kericho-Kisumu Highway, Nyanza Region*
-📞 *Contact:* +254 746 392 602
-    `.trim();
-
-    const whatsappUrl = `https://wa.me/254746392602?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, "_blank");
-
-    // Send email via API
     try {
-      await fetch('/api/send-order', {
+      // Send email via API
+      const response = await fetch('/api/send-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          subject: 'Shopping Cart Order - Rai Cement',
-          message,
+          customerDetails,
+          cartItems,
+          total: getTotal(),
         }),
       });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setShowSuccessPopup(true);
+        // Clear cart after successful order
+        setCartItems([]);
+        setCustomerDetails({
+          fullName: "",
+          phone: "",
+          email: "",
+          location: "",
+          quantity: "",
+        });
+      } else {
+        setShowErrorPopup(true);
+      }
     } catch (error) {
-      console.error('Failed to send email:', error);
+      console.error('Failed to send order:', error);
+      setShowErrorPopup(true);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div className="min-h-screen">
       <Navbar />
-      <div className="min-h-screen bg-cement-50 py-24">
+      <div className="min-h-screen bg-background py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -118,10 +123,10 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
             transition={{ duration: 0.6 }}
             className="mb-12"
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-cement-900 mb-4">
-              Shopping <span className="text-gold-600">Cart</span>
+            <h1 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">
+              Shopping <span className="text-primary">Cart</span>
             </h1>
-            <p className="text-xl text-cement-600">
+            <p className="text-xl text-text-secondary">
               Review your cement order before checkout
             </p>
           </motion.div>
@@ -133,13 +138,13 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
               transition={{ duration: 0.6 }}
               className="text-center py-16"
             >
-              <ShoppingBag className="text-cement-300 mx-auto mb-6" size={64} />
-              <h2 className="text-2xl font-bold text-cement-900 mb-4">
+              <ShoppingBag className="text-text-secondary mx-auto mb-6" size={64} />
+              <h2 className="text-2xl font-bold text-text-primary mb-4">
                 Your cart is empty
               </h2>
               <a
                 href="#products"
-                className="inline-block bg-gold-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-gold-600 transition-colors"
+                className="inline-block bg-accent text-navy px-8 py-3 rounded-lg font-semibold hover:bg-accent-dark transition-colors"
               >
                 Browse Products
               </a>
@@ -159,7 +164,7 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="bg-white rounded-xl shadow-lg p-6 flex items-center gap-6"
+                    className="bg-white rounded-xl shadow-sm p-6 flex items-center gap-6 border border-border"
                   >
                     <Image
                       src={item.image}
@@ -169,23 +174,23 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
                       className="w-24 h-24 object-cover rounded-lg"
                     />
                     <div className="flex-1">
-                      <h3 className="text-xl font-bold text-cement-900 mb-2">
+                      <h3 className="text-xl font-bold text-text-primary mb-2">
                         {item.name}
                       </h3>
-                      <p className="text-gold-600 font-semibold mb-4">{item.price}</p>
+                      <p className="text-primary font-semibold mb-4">{item.price}</p>
                       <div className="flex items-center gap-4">
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          className="w-10 h-10 bg-cement-100 rounded-lg flex items-center justify-center hover:bg-cement-200 transition-colors"
+                          className="w-10 h-10 bg-border rounded-lg flex items-center justify-center hover:bg-border-dark transition-colors"
                         >
                           -
                         </button>
-                        <span className="text-lg font-semibold text-cement-900 w-8 text-center">
+                        <span className="text-lg font-semibold text-text-primary w-8 text-center">
                           {item.quantity}
                         </span>
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="w-10 h-10 bg-cement-100 rounded-lg flex items-center justify-center hover:bg-cement-200 transition-colors"
+                          className="w-10 h-10 bg-border rounded-lg flex items-center justify-center hover:bg-border-dark transition-colors"
                         >
                           +
                         </button>
@@ -206,22 +211,22 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6 }}
-                className="bg-white rounded-xl shadow-lg p-6 h-fit sticky top-24"
+                className="bg-white rounded-xl shadow-sm p-6 h-fit sticky top-24 border border-border"
               >
-                <h2 className="text-2xl font-bold text-cement-900 mb-6">
+                <h2 className="text-2xl font-bold text-text-primary mb-6">
                   Order Summary
                 </h2>
                 <div className="space-y-4 mb-6">
-                  <div className="flex justify-between text-cement-600">
+                  <div className="flex justify-between text-text-secondary">
                     <span>Subtotal</span>
                     <span>KES {getTotal().toLocaleString()}</span>
                   </div>
-                  <div className="flex justify-between text-cement-600">
+                  <div className="flex justify-between text-text-secondary">
                     <span>Delivery</span>
                     <span>Calculated at checkout</span>
                   </div>
                   <div className="border-t border-gray-200 pt-4">
-                    <div className="flex justify-between text-xl font-bold text-cement-900">
+                    <div className="flex justify-between text-xl font-bold text-text-primary">
                       <span>Total</span>
                       <span>KES {getTotal().toLocaleString()}</span>
                     </div>
@@ -230,7 +235,7 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
 
                 {/* Customer Details Form */}
                 <div className="mb-6 space-y-4">
-                  <h3 className="text-lg font-semibold text-cement-900 mb-4">
+                  <h3 className="text-lg font-semibold text-text-primary mb-4">
                     Your Details
                   </h3>
                   <div className="space-y-3">
@@ -241,7 +246,7 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
                         placeholder="Full Name *"
                         value={customerDetails.fullName}
                         onChange={(e) => setCustomerDetails({ ...customerDetails, fullName: e.target.value })}
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                        className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
                     <div className="relative">
@@ -251,7 +256,7 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
                         placeholder="Phone Number *"
                         value={customerDetails.phone}
                         onChange={(e) => setCustomerDetails({ ...customerDetails, phone: e.target.value })}
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                        className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
                     <div className="relative">
@@ -261,7 +266,7 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
                         placeholder="Email *"
                         value={customerDetails.email}
                         onChange={(e) => setCustomerDetails({ ...customerDetails, email: e.target.value })}
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                        className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
                     <div className="relative">
@@ -271,7 +276,7 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
                         placeholder="Exact Location *"
                         value={customerDetails.location}
                         onChange={(e) => setCustomerDetails({ ...customerDetails, location: e.target.value })}
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                        className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
                     <div className="relative">
@@ -281,7 +286,7 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
                         placeholder="Quantity (bags) *"
                         value={customerDetails.quantity}
                         onChange={(e) => setCustomerDetails({ ...customerDetails, quantity: e.target.value })}
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                        className="w-full pl-10 pr-4 py-3 border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                     </div>
                   </div>
@@ -289,14 +294,15 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
 
                 <button
                   onClick={handleCheckout}
-                  className="w-full bg-gradient-to-r from-gold-500 to-gold-600 text-white py-4 rounded-lg font-semibold hover:from-gold-600 hover:to-gold-700 transition-all duration-300 shadow-lg flex items-center justify-center space-x-2"
+                  disabled={isSubmitting}
+                  className="w-full bg-gradient-to-r from-accent to-accent-light text-navy py-4 rounded-lg font-semibold hover:from-accent-dark hover:to-accent transition-all duration-300 shadow-lg flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <span>Order Now</span>
-                  <ArrowRight size={20} />
+                  <span>{isSubmitting ? 'Processing...' : 'Order Now'}</span>
+                  {!isSubmitting && <ArrowRight size={20} />}
                 </button>
                 <a
                   href="#products"
-                  className="block text-center text-cement-600 hover:text-gold-600 transition-colors mt-4"
+                  className="block text-center text-text-secondary hover:text-primary transition-colors mt-4"
                 >
                   Continue Shopping
                 </a>
@@ -306,6 +312,84 @@ ${cartItems.map((item) => `• ${item.name} x${item.quantity} - ${item.price}`).
         </div>
       </div>
       <Footer />
+
+      {/* Success Popup */}
+      <AnimatePresence>
+        {showSuccessPopup && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowSuccessPopup(false)}
+              className="fixed inset-0 bg-black/50 z-50"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="fixed inset-0 flex items-center justify-center z-50 p-4"
+            >
+              <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold text-text-primary mb-2">Order Placed Successfully!</h3>
+                <p className="text-text-secondary mb-6">
+                  Thank you for your order. Your order has been received and sent to our team. We will contact you shortly to confirm delivery and payment details.
+                </p>
+                <button
+                  onClick={() => setShowSuccessPopup(false)}
+                  className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors"
+                >
+                  Continue Shopping
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Error Popup */}
+      <AnimatePresence>
+        {showErrorPopup && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowErrorPopup(false)}
+              className="fixed inset-0 bg-black/50 z-50"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="fixed inset-0 flex items-center justify-center z-50 p-4"
+            >
+              <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-8 text-center">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold text-text-primary mb-2">Unable to Place Order</h3>
+                <p className="text-text-secondary mb-6">
+                  Something went wrong while submitting your order. Please try again.
+                </p>
+                <button
+                  onClick={() => setShowErrorPopup(false)}
+                  className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors"
+                >
+                  Try Again
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
