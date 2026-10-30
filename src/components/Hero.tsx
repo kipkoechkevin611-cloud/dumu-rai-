@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, Truck } from "lucide-react";
+import { ArrowRight, Truck, Phone } from "lucide-react";
 
 export default function Hero() {
   return (
@@ -81,11 +81,27 @@ export default function Hero() {
             </a>
           </motion.div>
 
-          {/* Trust Badges */}
+          {/* Phone Number */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
+            className="mt-8"
+          >
+            <a
+              href="tel:0788980070"
+              className="inline-flex items-center space-x-3 bg-white/10 backdrop-blur-sm border border-accent/50 text-white px-8 py-4 rounded-lg hover:bg-white/20 transition-all duration-300 font-semibold tracking-wide"
+            >
+              <Phone className="text-accent" size={24} />
+              <span className="text-2xl">0788980070</span>
+            </a>
+          </motion.div>
+
+          {/* Trust Badges */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
             className="mt-16 flex flex-wrap items-center justify-center gap-8"
           >
             <div className="text-center">
